@@ -33,9 +33,9 @@ vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'tex', 'plaintex' }, -- You can include other LaTeX-related filetypes here
   callback = function()
-    vim.opt_local.tabstop = 2 -- A tab character is 2 columns wide
-    vim.opt_local.shiftwidth = 2 -- Auto-indent commands (like >>) use 2 spaces
-    vim.opt_local.softtabstop = 2 -- When pressing Tab in insert mode, use 2 spaces
+    vim.opt_local.tabstop = 2      -- A tab character is 2 columns wide
+    vim.opt_local.shiftwidth = 2   -- Auto-indent commands (like >>) use 2 spaces
+    vim.opt_local.softtabstop = 2  -- When pressing Tab in insert mode, use 2 spaces
     vim.opt_local.expandtab = true -- Use spaces instead of actual tab characters
     -- Disable auto-indenting options specifically for this buffer
     vim.opt_local.autoindent = true
@@ -145,7 +145,7 @@ vim.diagnostic.config {
   underline = { severity = vim.diagnostic.severity.ERROR },
 
   -- Can switch between these as you prefer
-  virtual_text = true, -- Text shows up at the end of the line
+  virtual_text = true,   -- Text shows up at the end of the line
   virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
 
   -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
@@ -269,7 +269,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
+        { '<leader>s', group = '[S]earch',   mode = { 'n', 'v' } },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
@@ -312,7 +312,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -394,7 +394,8 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current workspace.
           -- Similar to document symbols, except searches over your entire project.
-          vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
+          vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols,
+            { buffer = buf, desc = 'Open Workspace Symbols' })
 
           -- Jump to the type of the word under your cursor.
           -- Useful when you're not sure what type a variable is and you want to see
@@ -427,7 +428,8 @@ require('lazy').setup({
       )
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
+      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end,
+        { desc = '[S]earch [N]eovim files' })
     end,
   },
 
@@ -467,7 +469,7 @@ require('lazy').setup({
       -- and language tooling communicate in a standardized fashion.
       --
       -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
+      -- language (such as `gopls`, `lua-language-server`, `rust_analyzer`, etc.). These Language Servers
       -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
       -- processes that communicate with some "client" - in this case, Neovim!
       --
@@ -547,39 +549,12 @@ require('lazy').setup({
           --
           -- this may be unwanted, since they displace some of your code
           if client and client:supports_method('textdocument/inlayhint', event.buf) then
-            map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[t]oggle inlay [h]ints')
+            map('<leader>th',
+              function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end,
+              '[t]oggle inlay [h]ints')
           end
         end,
       })
-
-      -- diagnostic config
-      -- see :help vim.diagnostic.opts
-      vim.diagnostic.config {
-        severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
-        underline = { severity = vim.diagnostic.severity.error },
-        signs = vim.g.have_nerd_font and {
-          text = {
-            [vim.diagnostic.severity.error] = '󰅚 ',
-            [vim.diagnostic.severity.warn] = '󰀪 ',
-            [vim.diagnostic.severity.info] = '󰋽 ',
-            [vim.diagnostic.severity.hint] = '󰌶 ',
-          },
-        } or {},
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.error] = diagnostic.message,
-              [vim.diagnostic.severity.warn] = diagnostic.message,
-              [vim.diagnostic.severity.info] = diagnostic.message,
-              [vim.diagnostic.severity.hint] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
-      }
 
       -- lsp servers and clients are able to communicate to each other what features they support.
       --  by default, neovim doesn't support everything that is in the lsp specification.
@@ -592,7 +567,7 @@ require('lazy').setup({
       --  see `:help lsp-config` for information about keys and how to configure
       local servers = {
         clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         --
@@ -612,8 +587,8 @@ require('lazy').setup({
       -- you can press `g?` for help in this menu.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'lua_ls', -- lua language server
-        'stylua', -- used to format lua code
+        'lua-language-server', -- lua language server
+        'stylua',              -- used to format lua code
         -- you can add other tools here that you want mason to install
       })
 
@@ -626,7 +601,7 @@ require('lazy').setup({
       end
 
       -- Special Lua Config, as recommended by neovim help docs
-      vim.lsp.config('lua_ls', {
+      vim.lsp.config('lua-language-server', {
         on_init = function(client)
           if client.workspace_folders then
             local path = client.workspace_folders[1].name
@@ -650,7 +625,7 @@ require('lazy').setup({
           Lua = {},
         },
       })
-      vim.lsp.enable 'lua_ls'
+      vim.lsp.enable 'lua-language-server'
     end,
   },
 
@@ -809,7 +784,7 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  { 'folke/todo-comments.nvim',  event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
     'nvim-mini/mini.nvim',
@@ -849,7 +824,8 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim',
+        'vimdoc' }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
