@@ -33,9 +33,9 @@ vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'tex', 'plaintex' }, -- You can include other LaTeX-related filetypes here
   callback = function()
-    vim.opt_local.tabstop = 2      -- A tab character is 2 columns wide
-    vim.opt_local.shiftwidth = 2   -- Auto-indent commands (like >>) use 2 spaces
-    vim.opt_local.softtabstop = 2  -- When pressing Tab in insert mode, use 2 spaces
+    vim.opt_local.tabstop = 2 -- A tab character is 2 columns wide
+    vim.opt_local.shiftwidth = 2 -- Auto-indent commands (like >>) use 2 spaces
+    vim.opt_local.softtabstop = 2 -- When pressing Tab in insert mode, use 2 spaces
     vim.opt_local.expandtab = true -- Use spaces instead of actual tab characters
     -- Disable auto-indenting options specifically for this buffer
     vim.opt_local.autoindent = true
@@ -74,6 +74,29 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     if vim.fn.line '\'"' > 1 and vim.fn.line '\'"' <= vim.fn.line '$' then vim.api.nvim_exec('normal! g\'"', false) end
   end,
 })
+
+-- Terminal shortcuts
+-- NOTE: float-term.lua in ./lua/custom adds <space>ot for floating terminal toggle
+vim.keymap.set('n', '<space>oht', function()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.cmd.wincmd 'J'
+  vim.api.nvim_win_set_height(0, 12)
+  vim.cmd 'normal i'
+end, { desc = '[O]pen [H]orizontal [T]erminal split' })
+
+vim.keymap.set('n', '<space>ovt', function()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.api.nvim_win_set_width(0, 64)
+  vim.cmd 'normal i'
+end, { desc = '[O]pen [V]ertical [T]erminal split' })
+
+-- Example for sending a command to terminal
+-- local job_id = 0
+-- vim.keymap.set(..., function()
+-- vim.fn.chansend(job_id, { "ls -la\r\n" })
+-- end)
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -145,7 +168,7 @@ vim.diagnostic.config {
   underline = { severity = vim.diagnostic.severity.ERROR },
 
   -- Can switch between these as you prefer
-  virtual_text = true,   -- Text shows up at the end of the line
+  virtual_text = true, -- Text shows up at the end of the line
   virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
 
   -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
@@ -269,7 +292,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch',   mode = { 'n', 'v' } },
+        { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
@@ -312,7 +335,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -394,8 +417,7 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current workspace.
           -- Similar to document symbols, except searches over your entire project.
-          vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols,
-            { buffer = buf, desc = 'Open Workspace Symbols' })
+          vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
 
           -- Jump to the type of the word under your cursor.
           -- Useful when you're not sure what type a variable is and you want to see
@@ -428,8 +450,7 @@ require('lazy').setup({
       )
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end,
-        { desc = '[S]earch [N]eovim files' })
+      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
     end,
   },
 
@@ -549,9 +570,7 @@ require('lazy').setup({
           --
           -- this may be unwanted, since they displace some of your code
           if client and client:supports_method('textdocument/inlayhint', event.buf) then
-            map('<leader>th',
-              function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end,
-              '[t]oggle inlay [h]ints')
+            map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[t]oggle inlay [h]ints')
           end
         end,
       })
@@ -588,7 +607,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'lua-language-server', -- lua language server
-        'stylua',              -- used to format lua code
+        'stylua', -- used to format lua code
         -- you can add other tools here that you want mason to install
       })
 
@@ -784,7 +803,7 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim',  event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
     'nvim-mini/mini.nvim',
@@ -824,8 +843,7 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim',
-        'vimdoc' }
+      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
@@ -854,6 +872,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   { import = 'custom.plugins' },
+  vim.keymap.set('n', '-', '<cmd>Oil<CR>'),
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -883,3 +902,4 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+require 'custom.float-term'

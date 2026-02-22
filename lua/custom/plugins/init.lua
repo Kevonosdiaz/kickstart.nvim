@@ -4,11 +4,20 @@
 -- See the kickstart.nvim README for more information
 return {
   {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'nvim-mini/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+  },
+  {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
-    config = function()
-      require 'custom.configs.smart-splits'
-    end,
+    config = function() require 'custom.configs.smart-splits' end,
   },
   {
     'rcarriga/nvim-notify',
@@ -61,9 +70,7 @@ return {
     'kevinhwang91/nvim-ufo',
     lazy = false,
     dependencies = { 'kevinhwang91/promise-async' },
-    config = function()
-      require 'custom.configs.nvim-ufo'
-    end,
+    config = function() require 'custom.configs.nvim-ufo' end,
   },
   {
     'ThePrimeagen/harpoon',
@@ -71,9 +78,7 @@ return {
     branch = 'harpoon2',
     -- nvim-ufo just for workaround config...
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim', 'kevinhwang91/nvim-ufo' },
-    config = function()
-      require 'custom.configs.harpoon'
-    end,
+    config = function() require 'custom.configs.harpoon' end,
   },
   {
     'folke/zen-mode.nvim',
@@ -138,34 +143,24 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' },
-    config = function()
-      require 'custom.configs.lualine'
-    end,
+    config = function() require 'custom.configs.lualine' end,
   },
   {
     'catppuccin/nvim',
     name = 'catppuccin',
     priority = 1000,
-    config = function()
-      vim.cmd [[colorscheme catppuccin-mocha]]
-    end,
+    config = function() vim.cmd [[colorscheme catppuccin-mocha]] end,
   },
   {
     'akinsho/bufferline.nvim',
     version = '*',
     dependencies = 'nvim-tree/nvim-web-devicons',
-    config = function()
-      require 'custom.configs.bufferline'
-    end,
+    config = function() require 'custom.configs.bufferline' end,
   },
   {
     'nvim-tree/nvim-tree.lua',
-    config = function()
-      require 'custom.configs.nvimtree'
-    end,
-    opts = function()
-      require 'custom.configs.nvimtree-opts'
-    end,
+    config = function() require 'custom.configs.nvimtree' end,
+    opts = function() require 'custom.configs.nvimtree-opts' end,
   },
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -174,9 +169,7 @@ return {
     keys = {
       {
         '<leader>f',
-        function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
-        end,
+        function() require('conform').format { async = true, lsp_format = 'fallback' } end,
         mode = '',
         desc = '[F]ormat buffer',
       },
