@@ -15,6 +15,12 @@ return {
     lazy = false,
   },
   {
+    'xemptuous/sqlua.nvim',
+    lazy = true,
+    cmd = 'SQLua',
+    config = function() require('sqlua').setup() end,
+  },
+  {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
     config = function() require 'custom.configs.smart-splits' end,
@@ -47,8 +53,8 @@ return {
     opts = {},
       -- stylua: ignore
       keys = {
-        { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-        { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+        { "<CR>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+        -- { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
         { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
         { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
         { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
