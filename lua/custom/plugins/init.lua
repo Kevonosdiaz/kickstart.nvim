@@ -41,7 +41,7 @@ return {
     opts = {
       -- Be a bit more forgiving for now
       max_time = 2000,
-      max_count = 7,
+      max_count = 15,
       disable_mouse = false,
       timeout = 2500,
     },
@@ -204,6 +204,7 @@ return {
         python = { 'yapf' },
         cpp = { 'clang-format' },
         markdown = { 'deno_fmt' },
+        yaml = { 'yamlfmt' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
