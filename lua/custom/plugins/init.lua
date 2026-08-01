@@ -4,6 +4,14 @@
 -- See the kickstart.nvim README for more information
 return {
   {
+    'ThePrimeagen/refactoring.nvim',
+    dependencies = {
+      'lewis6991/async.nvim',
+    },
+    config = function() require 'custom.configs.refactor' end,
+    lazy = false,
+  },
+  {
     'stevearc/oil.nvim',
     ---@module 'oil'
     ---@type oil.SetupOpts
