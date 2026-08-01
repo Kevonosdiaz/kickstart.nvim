@@ -23,12 +23,6 @@ return {
     lazy = false,
   },
   {
-    'xemptuous/sqlua.nvim',
-    lazy = true,
-    cmd = 'SQLua',
-    config = function() require('sqlua').setup() end,
-  },
-  {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
     config = function() require 'custom.configs.smart-splits' end,
